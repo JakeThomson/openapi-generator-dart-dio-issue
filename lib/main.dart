@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:one_of/one_of.dart';
-import 'package:openapi/openapi.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,25 +38,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _makeTestRequest() async {
-    final requestBody = TestRequest(
-      (b) => b
-        ..type = TestRequestTypeEnum.requestB
-        ..oneOf = OneOf1<RequestB>(
-          value: RequestB(
-            (b) => b
-              ..name = ""
-              ..credentials = RequestA((b) => b
-                ..email = "email"
-                ..password = "password").toBuilder(),
-          ),
-        ),
-    );
-    await Openapi().getDefaultApi().test(
-          testRequest: requestBody,
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _makeTestRequest,
+        onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ),
