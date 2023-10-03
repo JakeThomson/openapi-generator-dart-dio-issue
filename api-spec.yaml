@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  title: Example Contract
+  description: To demonstrate that polymorphic request bodies are broken
+  version: 0.1.0
+paths:
+  /test:
+    post:
+      summary: Endpoint with multiple request bodies
+      operationId: test
+      requestBody:
+        description: Polymorphic request body
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                    - RequestA
+                    - RequestB
+              discriminator:
+                propertyName: type
+                mapping:
+                  RequestA: '#/components/schemas/RequestA'
+                  RequestB: '#/components/schemas/RequestB'
+              oneOf:
+                - $ref: '#/components/schemas/RequestA'
+                - $ref: '#/components/schemas/RequestB'
+      responses:
+        '200':
+          description: OK
+
+components:
+  schemas:
+    RequestA:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    RequestB:
+      type: object
+      properties:
+        name:
+          type: string
+        credentials:
+          $ref: '#/components/schemas/RequestA'
